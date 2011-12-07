@@ -2,7 +2,22 @@ module Formtastic
   module Inputs
     module Base
       module Html
+        def extra_html
+          template.content_tag(:div, Formtastic::Util.html_safe(extra_html_text),:class => (options[:extra_html_class] || 'extra-html')) if extra_html?
+        end
         
+        def extra_html?
+          extra_html_text.present? && !extra_html_text.kind_of?(Hash)
+        end
+
+        def extra_html_text
+          localized_string(method, options[:extra_html], :extra_html)
+        end
+        
+        def extra_html_position
+          options[:extra_html_position] ||= 1
+        end
+
         # Defines how the instance of an input should be rendered to a HTML string.
         #
         # @abstract Implement this method in your input class to describe how the input should render itself.

@@ -7,8 +7,10 @@ module Formtastic
         # Override this method if you want to change the display order (for example, rendering the
         # errors before the body of the input).
         def input_wrapping(&block)
+          tag_content = [template.capture(&block), error_html, hint_html]
+          tag_content.insert(extra_html_position,extra_html)
           template.content_tag(:li, 
-            [template.capture(&block), error_html, hint_html].join("\n").html_safe, 
+            tag_content.join("\n").html_safe, 
             wrapper_html_options
           )
         end
